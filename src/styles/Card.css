@@ -1,0 +1,212 @@
+.card {
+  position: fixed;
+  top: 70px;
+  left: calc(50% - 500px / 2);
+  width: 500px;
+  height: auto;
+  max-height: 600px;
+  overflow-y: auto;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.card .left-card {
+  flex: 1;
+  height: 100%;
+  padding: 10px;
+  padding-bottom: 5px;
+}
+
+.card .left-card .start-end-position {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 10px;
+}
+
+.card .left-card .start-end-position .position {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card .left-card .start-end-position .position span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.card .left-card .start-end-position .position input {
+  flex: 1;
+  color: #333;
+  outline: none;
+  padding: 8px 5px;
+  background-color: transparent;
+  border: 1px solid #2b3a58;
+  border-radius: 5px;
+  text-transform: capitalize;
+}
+
+.card .left-card .map-stops {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.card .left-card .map-stops h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.card .left-card .stops {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 5px;
+}
+
+.card .left-card .stops .stop {
+  display: flex;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.card .left-card .stops label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  line-height: 30px;
+}
+
+.card .left-card .stops input {
+  width: 100%;
+  color: #333;
+  outline: none;
+  padding: 8px 5px;
+  background-color: transparent;
+  border: 1px solid #2b3a58;
+  border-radius: 5px;
+  text-transform: capitalize;
+}
+
+.card .left-card .stops .stop button {
+  border-radius: 20%;
+  background-color: #2b3a58;
+  outline: none;
+  border: none;
+  padding: 6px 5px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.card .left-card .stops .stop button svg {
+  font-size: 14px;
+  color: #fff;
+  margin: 2px;
+}
+
+.card .left-card .add-btn {
+  width: 100%;
+  margin: 10px 0;
+  border-radius: 5px;
+  padding: 5px 0;
+  background-color: #f3f3f3;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.card .left-card .add-btn:hover {
+  background-color: transparent;
+  background-image: linear-gradient(
+    to right,
+    rgba(100, 223, 204, 255),
+    rgba(122, 217, 104, 255)
+  );
+}
+
+.card .left-card .add-btn svg {
+  font-size: 20px;
+  color: #333;
+}
+
+.card .left-card .add-btn:hover svg {
+  color: #fff;
+}
+
+.card .left-card .add-btn span {
+  color: #2b3a58;
+  font-size: 14px;
+}
+
+.card .left-card .add-btn:hover span {
+  color: #fff;
+}
+
+.card .left-card .card-info {
+  width: 100%;
+  height: 100%;
+  margin-bottom: 10px;
+}
+
+.card .left-card .card-info .location {
+  color: #2b3a58;
+  margin: 0;
+}
+
+.card .left-card .card-info .stop {
+  color: #2b3a58;
+}
+
+.card .left-card .card-info .distance {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card .left-card .card-info .distance span {
+  color: #2b3a58;
+  font-size: 14px;
+}
+
+.card .bottom-nav {
+  height: 40px;
+  background-image: linear-gradient(to right, #60e0d6, rgba(100,223,204,255), rgba(122,217,104,255));
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 3px 5px;
+  gap: 10px;
+}
+
+.card .bottom-nav .icon {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.card .bottom-nav .icon svg {
+  color: #fff;
+}
+
+.card .bottom-nav .icon:hover {
+  background-color: #fff;
+}
+
+.card .bottom-nav .icon:hover svg {
+  color: #2b3a58;
+}

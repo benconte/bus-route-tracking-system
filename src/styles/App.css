@@ -1,0 +1,48 @@
+.container {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow-x: hidden;
+  z-index: 100;
+}
+
+.container .nav {
+  height: 60px;
+  background-image: linear-gradient(to right, rgba(100,223,204,255), rgba(122,217,104,255));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.container .nav h3 {
+  color: #2e6032;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.container .nav .toggler {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #fff;
+  border-radius: 20px;
+  height: 40px;
+  width: auto;
+  border: none;
+  padding: 0 10px;
+  cursor: pointer;
+  outline: none;
+}
+
+.container .nav .toggler span {
+  color: #2e6032;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.container .nav .toggler svg {
+  color: #2e6032;
+}
