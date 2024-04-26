@@ -17,7 +17,7 @@ const MapComponent: React.FC<MapProps> = ({
   const mapRef = useRef<HTMLDivElement>(null);
   const [, setRoutePolyline] = useState<string>("");
   const driverLocation = useDriverLocation();
-
+ 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_REACT_APP_GOOGLE_PLACES_API_KEY!,

@@ -17,6 +17,30 @@
   padding: 0 40px;
 }
 
+.container .nav .burger-icon {
+  cursor: pointer;
+  background-color: transparent;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .nav .burger-icon:hover {
+  background-color: #fff;
+}
+
+.container .nav .burger-icon svg {
+  font-size: 24px;
+  color: #fff;
+}
+
+.container .nav .burger-icon:hover svg {
+  color: #2b3a58;
+}
+
 .container .nav h3 {
   color: #2e6032;
   font-size: 25px;

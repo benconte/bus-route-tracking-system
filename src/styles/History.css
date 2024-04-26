@@ -1,0 +1,95 @@
+.history-card {
+  position: fixed;
+  top: 70px;
+  left: 50px;
+  width: 400px;
+  height: auto;
+  max-height: 450px;
+  overflow-y: auto;
+  background-color: #fff;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.history-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+  line-height: 50px;
+}
+
+.history-card .entries {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: start;
+}
+
+.history-card .entries .saved-route {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 6px;
+}
+
+.history-card .entries .saved-route:hover {
+  border-radius: 6px;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  cursor: pointer;
+}
+
+.history-card .entries .saved-route .left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.history-card .entries .saved-route .right {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+.history-card .entries .saved-route .right button {
+  border: none;
+  outline: none;
+  width: 30px;
+  height: 30px;
+  background-color: #333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.history-card .entries .saved-route .right button svg {
+    font-size: 14px;
+}
+
+.history-card .entries .saved-route .right .delete {
+  background-color: transparent;
+}
+
+.history-card .entries .saved-route .right .delete:hover {
+    background-color: #fff;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.history-card .entries .saved-route .right .delete svg {
+  font-size: 18px;
+  color: rgb(215, 60, 60);
+}
+
+.history-card .entries span {
+  color: #333;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.history-card .entries span {
+  color: #333;
+}
