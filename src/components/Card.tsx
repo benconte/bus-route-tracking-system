@@ -2,12 +2,12 @@ import "../styles/Card.css";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import useDriverLocation from "../hooks/useDriverLocation";
 import { useEffect, useMemo, useState } from "react";
 import useEtaToNextStop from "../hooks/use-eta-next-stop";
 import { formatDistance, formatDuration } from "../utils/format-utils";
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { SavedRoute } from "./history";
 
@@ -35,10 +35,10 @@ const Card: React.FC<NewComponentProps> = ({
   endingPoint,
   stops,
   onPointsChange,
-  currentStopIndex
+  currentStopIndex,
 }) => {
   const driverLocation = useDriverLocation();
-  
+
   const nextStop = useMemo(
     () => stops[currentStopIndex],
     [stops, currentStopIndex]
@@ -52,7 +52,7 @@ const Card: React.FC<NewComponentProps> = ({
     memoizedDriverLocation,
     nextStop.location
   );
-  
+
   const distanceToNextStop = useMemo(() => {
     if (memoizedDriverLocation && nextStop) {
       return (
@@ -73,29 +73,47 @@ const Card: React.FC<NewComponentProps> = ({
       endingPoint,
       stops,
     };
-    setIsFavorite(savedRoutes.some((route) => isRouteEqual(route, currentRoute)));
+    setIsFavorite(
+      savedRoutes.some((route) => isRouteEqual(route, currentRoute))
+    );
   }, [startingPoint, endingPoint, stops]);
 
-  const handleStartingPointLocationChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+  const handleStartingPointChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    isLocation: boolean
   ) => {
-    const [lat, lng] = event.target.value.split(",").map(Number);
-    onPointsChange(
-      { ...startingPoint, location: { lat, lng } },
-      endingPoint,
-      stops
-    );
+    if (isLocation) {
+      const [lat, lng] = event.target.value.split(",").map(Number);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        onPointsChange(
+          { ...startingPoint, location: { lat, lng } },
+          endingPoint,
+          stops
+        );
+      }
+    } else {
+      const newName = event.target.value;
+      onPointsChange({ ...startingPoint, name: newName }, endingPoint, stops);
+    }
   };
 
-  const handleEndingPointLocationChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+  const handleEndingPointChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    isLocation: boolean
   ) => {
-    const [lat, lng] = event.target.value.split(",").map(Number);
-    onPointsChange(
-      startingPoint,
-      { ...endingPoint, location: { lat, lng } },
-      stops
-    );
+    if (isLocation) {
+      const [lat, lng] = event.target.value.split(",").map(Number);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        onPointsChange(
+          startingPoint,
+          { ...endingPoint, location: { lat, lng } },
+          stops
+        );
+      }
+    } else {
+      const newName = event.target.value;
+      onPointsChange(startingPoint, { ...endingPoint, name: newName }, stops);
+    }
   };
 
   const handleStopChange = (
@@ -105,13 +123,15 @@ const Card: React.FC<NewComponentProps> = ({
   ) => {
     if (isLocationChange) {
       const [lat, lng] = event.target.value.split(",").map(Number);
-      const newStop = { ...stops[index], location: { lat, lng } };
-      const newStops = [
-        ...stops.slice(0, index),
-        newStop,
-        ...stops.slice(index + 1),
-      ];
-      onPointsChange(startingPoint, endingPoint, newStops);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        const newStop = { ...stops[index], location: { lat, lng } };
+        const newStops = [
+          ...stops.slice(0, index),
+          newStop,
+          ...stops.slice(index + 1),
+        ];
+        onPointsChange(startingPoint, endingPoint, newStops);
+      }
     } else {
       const newName = event.target.value;
       const newStop = { ...stops[index], name: newName };
@@ -156,32 +176,32 @@ const Card: React.FC<NewComponentProps> = ({
             <span>Start Position name</span>
             <input
               type="text"
-              placeholder="enter starting position name"
+              placeholder="Enter starting position name"
               value={startingPoint.name}
-              onChange={(event) => handleStopChange(-1, event, false)}
+              onChange={(event) => handleStartingPointChange(event, false)}
             />
             <span>Start Position (lat, long)</span>
             <input
               type="text"
-              placeholder="enter starting position"
+              placeholder="Enter starting position"
               value={`${startingPoint.location.lat},${startingPoint.location.lng}`}
-              onChange={handleStartingPointLocationChange}
+              onChange={(event) => handleStartingPointChange(event, true)}
             />
           </div>
           <div className="position">
             <span>End Position name</span>
             <input
               type="text"
-              placeholder="enter ending position name"
+              placeholder="Enter ending position name"
               value={endingPoint.name}
-              onChange={(event) => handleStopChange(-1, event, false)}
+              onChange={(event) => handleEndingPointChange(event, false)}
             />
             <span>End Position location</span>
             <input
               type="text"
-              placeholder="enter ending position"
+              placeholder="Enter ending position"
               value={`${endingPoint.location.lat},${endingPoint.location.lng}`}
-              onChange={handleEndingPointLocationChange}
+              onChange={(event) => handleEndingPointChange(event, true)}
             />
           </div>
         </div>
@@ -196,7 +216,7 @@ const Card: React.FC<NewComponentProps> = ({
                     Stop {index + 1} name:
                     <input
                       type="text"
-                      placeholder="enter starting position name"
+                      placeholder="Enter stop name"
                       value={stop.name}
                       onChange={(event) =>
                         handleStopChange(index, event, false)
@@ -207,7 +227,7 @@ const Card: React.FC<NewComponentProps> = ({
                     Stop {index + 1} (lat, long):
                     <input
                       type="text"
-                      placeholder="enter ending position name"
+                      placeholder="Enter stop location"
                       value={`${stop.location.lat},${stop.location.lng}`}
                       onChange={(event) => handleStopChange(index, event, true)}
                     />
@@ -247,7 +267,11 @@ const Card: React.FC<NewComponentProps> = ({
       </div>
       <div className="bottom-nav">
         <div className="icon" onClick={handleFavorite}>
-          {isFavorite ? <FavoriteIcon className="active" /> : <FavoriteBorderIcon />}
+          {isFavorite ? (
+            <FavoriteIcon className="active" />
+          ) : (
+            <FavoriteBorderIcon />
+          )}
         </div>
         <div className="icon">
           <InfoOutlinedIcon />
@@ -295,6 +319,5 @@ function isRouteEqual(route1: SavedRoute, route2: SavedRoute): boolean {
 
   return areStartPointsEqual && areEndPointsEqual && areStopsEqual;
 }
-
 
 export default Card;
