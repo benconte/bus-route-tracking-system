@@ -137,7 +137,6 @@ const Card: React.FC<NewComponentProps> = ({
     } else {
       const newName = event.target.value;
       const newStop = { ...stops[index], name: newName };
-      console.log(newStop)
       const newStops = [
         ...stops.slice(0, index),
         newStop,
