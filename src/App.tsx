@@ -44,6 +44,7 @@ const App: React.FC = () => {
       location: { lat: -1.9487480402200394, lng: 30.126596781356923 },
     },
   ]);
+  const [currentStopIndex, setCurrentStopIndex] = useState<number>(0);
 
   // This function will be called from the new <Map> component to update the state
   const handlePointsChange = (
@@ -63,11 +64,13 @@ const App: React.FC = () => {
         startingPoint={startingPoint}
         endingPoint={endingPoint}
         stops={stops}
+        currentStopIndex={currentStopIndex}
       />
       <MapComponent
         startingPoint={startingPoint.location}
         endingPoint={endingPoint.location}
         stops={stops.map((stop) => stop.location)}
+        setCurrentStopIndex={setCurrentStopIndex}
       />
     </>
   );
@@ -77,6 +80,7 @@ interface MapDetailsProps {
   startingPoint: LocationWithName;
   endingPoint: LocationWithName;
   stops: LocationWithName[];
+  currentStopIndex: number;
   handlePointsChange: (
     newStartingPoint: LocationWithName,
     newEndingPoint: LocationWithName,
@@ -89,6 +93,7 @@ const MapDetails: React.FC<MapDetailsProps> = ({
   startingPoint,
   stops,
   handlePointsChange,
+  currentStopIndex,
 }) => {
   const [isCardVisible, setIsCardVisible] = useState<boolean>(false);
   const [isHistoryVisible, setIsHistoryVisible] = useState<boolean>(false);
@@ -137,6 +142,7 @@ const MapDetails: React.FC<MapDetailsProps> = ({
           startingPoint={startingPoint}
           endingPoint={endingPoint}
           stops={stops}
+          currentStopIndex={currentStopIndex}
         />
       )}
     </div>

@@ -22,6 +22,7 @@ interface NewComponentProps {
   startingPoint: LocationWithName;
   endingPoint: LocationWithName;
   stops: LocationWithName[];
+  currentStopIndex: number;
   onPointsChange: (
     newStartingPoint: LocationWithName,
     newEndingPoint: LocationWithName,
@@ -34,9 +35,9 @@ const Card: React.FC<NewComponentProps> = ({
   endingPoint,
   stops,
   onPointsChange,
+  currentStopIndex
 }) => {
   const driverLocation = useDriverLocation();
-  const [currentStopIndex] = useState<number>(0);
   
   const nextStop = useMemo(
     () => stops[currentStopIndex],

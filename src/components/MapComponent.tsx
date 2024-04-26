@@ -6,18 +6,20 @@ interface MapProps {
   startingPoint: google.maps.LatLngLiteral;
   stops: google.maps.LatLngLiteral[];
   endingPoint: google.maps.LatLngLiteral;
+  setCurrentStopIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const MapComponent: React.FC<MapProps> = ({
   startingPoint,
   stops,
   endingPoint,
+  setCurrentStopIndex,
 }) => {
   const [, setMap] = useState<google.maps.Map | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const [, setRoutePolyline] = useState<string>("");
   const driverLocation = useDriverLocation();
- 
+
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_REACT_APP_GOOGLE_PLACES_API_KEY!,
@@ -124,6 +126,26 @@ const MapComponent: React.FC<MapProps> = ({
             const updateDriverMarker = () => {
               if (driverMarker && driverLocation) {
                 driverMarker.setPosition(driverLocation);
+
+                // Check if the driver has reached a stop
+                const stopsWithDistances = stops.map((stop) => {
+                  const distance =
+                    google.maps.geometry.spherical.computeDistanceBetween(
+                      driverLocation,
+                      stop
+                    );
+                  return { stop, distance };
+                });
+
+                // Find the closest stop within a reasonable distance (e.g., 50 meters)
+                const closestStop = stopsWithDistances.find(
+                  (stopWithDistance) => stopWithDistance.distance < 50
+                );
+
+                if (closestStop) {
+                  const stopIndex = stops.indexOf(closestStop.stop);
+                  setCurrentStopIndex(stopIndex + 1); // Increment the stop index
+                }
               }
             };
             updateDriverMarker();
