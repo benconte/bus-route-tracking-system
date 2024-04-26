@@ -10,6 +10,7 @@ import { formatDistance, formatDuration } from "../utils/format-utils";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { SavedRoute } from "./history";
+import StopInput from "./StopInput";
 
 interface LatLngLiteral extends google.maps.LatLngLiteral {}
 
@@ -121,6 +122,7 @@ const Card: React.FC<NewComponentProps> = ({
     event: React.ChangeEvent<HTMLInputElement>,
     isLocationChange: boolean
   ) => {
+    event.persist();
     if (isLocationChange) {
       const [lat, lng] = event.target.value.split(",").map(Number);
       if (!isNaN(lat) && !isNaN(lng)) {
@@ -135,6 +137,7 @@ const Card: React.FC<NewComponentProps> = ({
     } else {
       const newName = event.target.value;
       const newStop = { ...stops[index], name: newName };
+      console.log(newStop)
       const newStops = [
         ...stops.slice(0, index),
         newStop,
@@ -210,20 +213,17 @@ const Card: React.FC<NewComponentProps> = ({
           <h3>Stops:</h3>
           <div className="stops">
             {stops.map((stop, index) => (
-              <div key={stop.name + "-" + index} className="stop">
+              <div key={index} className="stop">
                 <div className="details">
-                  <label key={index}>
+                  <label>
                     Stop {index + 1} name:
-                    <input
-                      type="text"
-                      placeholder="Enter stop name"
-                      value={stop.name}
-                      onChange={(event) =>
-                        handleStopChange(index, event, false)
-                      }
+                    <StopInput
+                      stop={stop}
+                      index={index}
+                      onStopChange={handleStopChange}
                     />
                   </label>
-                  <label key={index}>
+                  <label>
                     Stop {index + 1} (lat, long):
                     <input
                       type="text"
@@ -257,7 +257,6 @@ const Card: React.FC<NewComponentProps> = ({
               Distance:{" "}
               {distanceToNextStop ? formatDistance(distanceToNextStop) : "0"}
             </span>
-            {/* <span>ETA to next stop: {etaToNextStop ? formatDuration(etaToNextStop) : "0"} min</span> */}
             <span>
               Time: {etaToNextStop ? formatDuration(etaToNextStop) : "0"}{" "}
               minutes
