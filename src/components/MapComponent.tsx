@@ -145,7 +145,7 @@ const MapComponent: React.FC<MapProps> = ({
   }, [isLoaded, startingPoint, stops, endingPoint, driverLocation]);
 
   if (!isLoaded) {
-    return <h3>Loading...</h3>;
+    return <h3>Initializing map...</h3>;
   }
 
   return <div ref={mapRef} style={{ height: "100vh", width: "100vw" }} />;

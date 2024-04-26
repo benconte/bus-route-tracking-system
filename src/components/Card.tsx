@@ -4,11 +4,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import useDriverLocation from "../hooks/useDriverLocation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useEtaToNextStop from "../hooks/use-eta-next-stop";
 import { formatDistance, formatDuration } from "../utils/format-utils";
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import { SavedRoute } from "./history";
 
 interface LatLngLiteral extends google.maps.LatLngLiteral {}
 
@@ -35,9 +36,8 @@ const Card: React.FC<NewComponentProps> = ({
   onPointsChange,
 }) => {
   const driverLocation = useDriverLocation();
-  const [isFavorite, setIsFavorite] = useState(false);
   const [currentStopIndex] = useState<number>(0);
-
+  
   const nextStop = useMemo(
     () => stops[currentStopIndex],
     [stops, currentStopIndex]
@@ -51,7 +51,7 @@ const Card: React.FC<NewComponentProps> = ({
     memoizedDriverLocation,
     nextStop.location
   );
-
+  
   const distanceToNextStop = useMemo(() => {
     if (memoizedDriverLocation && nextStop) {
       return (
@@ -63,6 +63,17 @@ const Card: React.FC<NewComponentProps> = ({
     }
     return null;
   }, [memoizedDriverLocation, nextStop]);
+
+  const [isFavorite, setIsFavorite] = useState(false);
+  useEffect(() => {
+    const savedRoutes = getSavedRoutes();
+    const currentRoute = {
+      startingPoint,
+      endingPoint,
+      stops,
+    };
+    setIsFavorite(savedRoutes.some((route) => isRouteEqual(route, currentRoute)));
+  }, [startingPoint, endingPoint, stops]);
 
   const handleStartingPointLocationChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -128,8 +139,12 @@ const Card: React.FC<NewComponentProps> = ({
       endingPoint,
       stops,
     };
-    localStorage.setItem("savedRoutes", JSON.stringify(favorite));
-    setIsFavorite(true);
+    const savedRoutes = getSavedRoutes();
+    if (!savedRoutes.some((route) => isRouteEqual(route, favorite))) {
+      savedRoutes.push(favorite);
+      localStorage.setItem("savedRoutes", JSON.stringify(savedRoutes));
+    }
+    setIsFavorite(!isFavorite);
   };
 
   return (
@@ -157,8 +172,8 @@ const Card: React.FC<NewComponentProps> = ({
             <input
               type="text"
               placeholder="enter ending position name"
-              value={`${endingPoint.location.lat},${endingPoint.location.lng}`}
-              onChange={handleEndingPointLocationChange}
+              value={endingPoint.name}
+              onChange={(event) => handleStopChange(-1, event, false)}
             />
             <span>End Position location</span>
             <input
@@ -243,5 +258,42 @@ const Card: React.FC<NewComponentProps> = ({
     </div>
   );
 };
+
+function getSavedRoutes(): SavedRoute[] {
+  const savedData = localStorage.getItem("savedRoutes");
+  if (savedData) {
+    const parsedData = JSON.parse(savedData);
+    if (Array.isArray(parsedData)) {
+      return parsedData;
+    } else {
+      return [parsedData];
+    }
+  }
+  return [];
+}
+
+function isRouteEqual(route1: SavedRoute, route2: SavedRoute): boolean {
+  const areStartPointsEqual =
+    route1.startingPoint.name === route2.startingPoint.name &&
+    route1.startingPoint.location.lat === route2.startingPoint.location.lat &&
+    route1.startingPoint.location.lng === route2.startingPoint.location.lng;
+
+  const areEndPointsEqual =
+    route1.endingPoint.name === route2.endingPoint.name &&
+    route1.endingPoint.location.lat === route2.endingPoint.location.lat &&
+    route1.endingPoint.location.lng === route2.endingPoint.location.lng;
+
+  const areStopsEqual =
+    route1.stops.length === route2.stops.length &&
+    route1.stops.every(
+      (stop, index) =>
+        stop.name === route2.stops[index].name &&
+        stop.location.lat === route2.stops[index].location.lat &&
+        stop.location.lng === route2.stops[index].location.lng
+    );
+
+  return areStartPointsEqual && areEndPointsEqual && areStopsEqual;
+}
+
 
 export default Card;

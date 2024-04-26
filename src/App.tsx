@@ -45,9 +45,6 @@ const App: React.FC = () => {
     },
   ]);
 
-  const [isCardVisible, setIsCardVisible] = useState<boolean>(false);
-  const [isHistoryVisible, setIsHistoryVisible] = useState<boolean>(false);
-
   // This function will be called from the new <Map> component to update the state
   const handlePointsChange = (
     newStartingPoint: LocationWithName,
@@ -59,55 +56,90 @@ const App: React.FC = () => {
     setStops(newStops);
   };
 
-  const toggleControls = () => {
-    setIsCardVisible(!isCardVisible);
-  };
-
-  const toggleHistory = () => {
-    setIsHistoryVisible(!isHistoryVisible);
-  };
-
   return (
     <>
-      <div className="container">
-        <div className="nav">
-          <div className="burger-icon" onClick={toggleHistory}>
-            <MenuIcon />
-          </div>
-          <button type="button" className="toggler" onClick={toggleControls}>
-            <span>{isCardVisible ? "Hide" : "Show"} controls</span>
-            {isCardVisible ? (
-              <KeyboardArrowDownIcon className="" />
-            ) : (
-              <KeyboardArrowRightIcon className="" />
-            )}
-          </button>
-          <h3>Startup</h3>
-        </div>
-
-        {isHistoryVisible && (
-          <History
-            onRouteSelect={handlePointsChange}
-            setIsCardVisible={setIsCardVisible}
-            setIsHistoryVisible={setIsHistoryVisible}
-          />
-        )}
-
-        {isCardVisible && (
-          <Card
-            onPointsChange={handlePointsChange}
-            startingPoint={startingPoint}
-            endingPoint={endingPoint}
-            stops={stops}
-          />
-        )}
-      </div>
+      <MapDetails
+        handlePointsChange={handlePointsChange}
+        startingPoint={startingPoint}
+        endingPoint={endingPoint}
+        stops={stops}
+      />
       <MapComponent
         startingPoint={startingPoint.location}
         endingPoint={endingPoint.location}
         stops={stops.map((stop) => stop.location)}
       />
     </>
+  );
+};
+
+interface MapDetailsProps {
+  startingPoint: LocationWithName;
+  endingPoint: LocationWithName;
+  stops: LocationWithName[];
+  handlePointsChange: (
+    newStartingPoint: LocationWithName,
+    newEndingPoint: LocationWithName,
+    newStops: LocationWithName[]
+  ) => void;
+}
+
+const MapDetails: React.FC<MapDetailsProps> = ({
+  endingPoint,
+  startingPoint,
+  stops,
+  handlePointsChange,
+}) => {
+  const [isCardVisible, setIsCardVisible] = useState<boolean>(false);
+  const [isHistoryVisible, setIsHistoryVisible] = useState<boolean>(false);
+  const toggleControls = () => {
+    setIsCardVisible(!isCardVisible);
+
+    if (isHistoryVisible) {
+      setIsHistoryVisible(false);
+    }
+  };
+
+  const toggleHistory = () => {
+    setIsHistoryVisible(!isHistoryVisible);
+    if (isCardVisible) {
+      setIsCardVisible(false);
+    }
+  };
+  return (
+    <div className="container">
+      <div className="nav">
+        <div className="burger-icon" onClick={toggleHistory}>
+          <MenuIcon />
+        </div>
+        <button type="button" className="toggler" onClick={toggleControls}>
+          <span>{isCardVisible ? "Hide" : "Show"} controls</span>
+          {isCardVisible ? (
+            <KeyboardArrowDownIcon className="" />
+          ) : (
+            <KeyboardArrowRightIcon className="" />
+          )}
+        </button>
+        <h3>Startup</h3>
+      </div>
+
+      {isHistoryVisible && (
+        <History
+          onRouteSelect={handlePointsChange}
+          setIsCardVisible={setIsCardVisible}
+          setIsHistoryVisible={setIsHistoryVisible}
+        />
+      )}
+
+      {isCardVisible && (
+        <Card
+          onPointsChange={handlePointsChange}
+          startingPoint={startingPoint}
+          endingPoint={endingPoint}
+          stops={stops}
+        />
+      )}
+    </div>
   );
 };
 

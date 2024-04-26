@@ -8,7 +8,7 @@ interface LocationWithName {
   location: google.maps.LatLngLiteral;
 }
 
-interface SavedRoute {
+export interface SavedRoute {
   startingPoint: LocationWithName;
   endingPoint: LocationWithName;
   stops: LocationWithName[];
@@ -48,7 +48,7 @@ function History({ onRouteSelect, setIsCardVisible, setIsHistoryVisible }: Histo
       <div className="entries">
         {savedRoutes.length > 0 ? (
           savedRoutes.map((route, index) => (
-            <div key={index} className="saved-route">
+            <div key={"history - " + index} className="saved-route">
               <div className="left">
                 <span>{index + 1}. </span>
                 <span className="route">
