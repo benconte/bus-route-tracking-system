@@ -1,30 +1,33 @@
-# React + TypeScript + Vite
+# Setting Up Google Maps API for Vite + React + TypeScript App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This guide will walk you through the steps to set up Google Maps API for your Vite + React + TypeScript application.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Before you begin, ensure you have the following:
 
-## Expanding the ESLint configuration
+- A Google Cloud Platform (GCP) account.
+- A billing account set up on GCP (Google Maps API requires billing information).
+- Vite + React + TypeScript application set up locally.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Step 1: Obtain Google Maps API Key
 
-- Configure the top-level `parserOptions` property like this:
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
+2. Select a project (or create a new one) from the project dropdown menu at the top of the page.
+3. Navigate to the **APIs & Services > Credentials** page.
+4. Click on **Create Credentials > API Key**.
+5. Copy the generated API key.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Step 2: Configure Environment Variables
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+1. Locate the `.env.example` file in your project.
+2. Duplicate it and rename the duplicated file to `.env`.
+3. Open the `.env` file.
+4. Replace the placeholder value with your Google Maps API key:
+
+   ```plaintext
+   REACT_APP_GOOGLE_MAPS_API_KEY=YOUR_API_KEY_HERE
+
+## Step 3: Install everything
+```plaintext
+   npm install
