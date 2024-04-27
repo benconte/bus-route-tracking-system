@@ -29,5 +29,13 @@ Before you begin, ensure you have the following:
    REACT_APP_GOOGLE_MAPS_API_KEY=YOUR_API_KEY_HERE
 
 ## Step 3: Install everything
-```plaintext
+1. Install everything
+
+   ```plaintext
    npm install
+
+## Step 4: Run the app
+1. Run the app:
+
+   ```plaintext
+   npm run dev
